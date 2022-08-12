@@ -1,6 +1,6 @@
 #include "FSMSampleController_Initial.h"
 
-#include "../FSMSampleController.h"
+#include "../controller.h"
 
 void FSMSampleController_Initial::configure(const mc_rtc::Configuration & config)
 {

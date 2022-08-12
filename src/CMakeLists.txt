@@ -1,14 +1,15 @@
 set(controller_SRC
-  FSMSampleController.cpp
+  controller.cpp
 )
 
 set(controller_HDR
-  FSMSampleController.h
+  controller.h
 )
 
 add_library(${PROJECT_NAME} SHARED ${controller_SRC} ${controller_HDR})
 set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "-DFSMSampleController_EXPORTS")
-target_link_libraries(${PROJECT_NAME} PUBLIC mc_rtc::mc_control_fsm)
+#target_link_libraries(${PROJECT_NAME} PUBLIC mc_rtc::mc_control_fsm)
+target_link_libraries(${PROJECT_NAME} PUBLIC lipm_walking_controller::lipm_walking_controller)
 install(TARGETS ${PROJECT_NAME}
   ARCHIVE DESTINATION "${MC_RTC_LIBDIR}"
   LIBRARY DESTINATION "${MC_RTC_LIBDIR}"

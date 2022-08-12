@@ -10,49 +10,288 @@ IdleKeepState: false
 StatesLibraries:
 - "@MC_STATES_DEFAULT_RUNTIME_INSTALL_PREFIX@"
 - "@MC_STATES_RUNTIME_INSTALL_PREFIX@"
+- "@MC_CONTROLLER_INSTALL_PREFIX@/lipm_walking_controller/states"
 # Where to look for state files
 StatesFiles:
 - "@MC_STATES_DEFAULT_RUNTIME_INSTALL_PREFIX@/data"
 - "@MC_STATES_RUNTIME_INSTALL_PREFIX@/data"
 # If true, state factory will be more verbose
 VerboseStateFactory: false
+
 # Additional robots to load
 robots:
   ground:
     module: env/ground
+
 # General constraints, always on
 constraints:
 - type: contact
 - type: dynamics
   damper: [0.1, 0.01, 0.5]
 - type: compoundJoint
+
 # Collision constraint
 collisions:
 - type: collision
   useMinimal: true
+
 # Initial set of contacts
 contacts:
-- r1: jvrc1
+- r1: hrp5_p
   r2: ground
   r1Surface: LeftFoot
   r2Surface: AllGround
-- r1: jvrc1
+- r1: hrp5_p
   r2: ground
   r1Surface: RightFoot
   r2Surface: AllGround
 
-# Some options for a specific robot
-jvrc1:
+initial_plan: custom_forward
+mpc:
+  weights:
+    jerk: 1.0
+    vel: [10.0, 100.0]
+    zmp: 1000.0
+tasks:
   posture:
-    stiffness: 1
-    weight: 10
-  ff:
-    stiffness: 2
-    weight: 100
+    stiffness: 1.0
+    weight: 10.0
+robot_models:
+  hrp5_p:
+    sole:
+      half_length: 0.11895
+      half_width: 0.069
+      friction: 0.7
+    torso:
+      pitch: 0.0
+plans:
+  hrp5_p:
+    ashibumi: # stepping in place
+      double_support_duration: 0.2
+      single_support_duration: 0.8
+      swing_height: 0.04
+      contacts:
+        - pose:
+            translation: [0.0, -0.105, 0.0]
+          surface: RightFootCenter
+        - pose:
+            translation: [0.0, 0.105, 0.0]
+          surface: LeftFootCenter
+        - pose:
+            translation: [0.0, -0.105, 0.0]
+          surface: RightFootCenter
+        - pose:
+            translation: [0.0, 0.105, 0.0]
+          surface: LeftFootCenter
+        - pose:
+            translation: [0.0, -0.105, 0.0]
+          surface: RightFootCenter
+        - pose:
+            translation: [0.0, 0.105, 0.0]
+          surface: LeftFootCenter
+        - pose:
+            translation: [0.0, -0.105, 0.0]
+          surface: RightFootCenter
+        - pose:
+            translation: [0.0, 0.105, 0.0]
+          surface: LeftFootCenter
+        - pose:
+            translation: [0.0, -0.105, 0.0]
+          surface: RightFootCenter
+        - pose:
+            translation: [0.0, 0.105, 0.0]
+          surface: LeftFootCenter
+        - pose:
+            translation: [0.0, -0.105, 0.0]
+          surface: RightFootCenter
+        - pose:
+            translation: [0.0, 0.105, 0.0]
+          surface: LeftFootCenter
+    custom_backward:
+      double_support_duration: 0.2
+      single_support_duration: 0.8
+      step_length: 0.15
+      swing_height: 0.05
+      contacts:
+        - pose:
+            translation: [0.0, -0.105, 0.0]
+          surface: RightFootCenter
+        - pose:
+            translation: [0.0, 0.105, 0.0]
+          surface: LeftFootCenter
+    custom_forward:
+      double_support_duration: 0.1
+      single_support_duration: 0.7
+      step_length: 0.2
+      swing_height: 0.04
+      contacts:
+        - pose:
+            translation: [0.0, -0.105, 0.0]
+          surface: RightFootCenter
+        - pose:
+            translation: [0.0, 0.105, 0.0]
+          surface: LeftFootCenter
+    custom_lateral:
+      double_support_duration: 0.2
+      single_support_duration: 0.8
+      step_length: 0.1
+      swing_height: 0.04
+      contacts:
+        - pose:
+            translation: [0.0, -0.105, 0.0]
+          surface: RightFootCenter
+        - pose:
+            translation: [0.0, 0.105, 0.0]
+          surface: LeftFootCenter
+      mpc:
+        weights:
+          jerk: 1.0
+          vel: [10.0, 300.0]
+          zmp: 1000.0
+    walk_backward_75cm:
+      double_support_duration: 0.2
+      single_support_duration: 0.8
+      swing_height: 0.05
+      contacts:
+        - pose:
+            translation: [0.0, -0.105, 0.0]
+          ref_vel: [0.0, 0.0, 0.0]
+          surface: RightFootCenter
+        - pose:
+            translation: [0.0, 0.105, 0.0]
+          ref_vel: [0.0, 0.0, 0.0]
+          surface: LeftFootCenter
+        - pose:
+            translation: [-0.15, -0.105, 0.0]
+          ref_vel: [-0.075, 0.0, 0.0]
+          surface: RightFootCenter
+        - pose:
+            translation: [-0.3, 0.105, 0.0]
+          ref_vel: [-0.15, 0.0, 0.0]
+          surface: LeftFootCenter
+        - pose:
+            translation: [-0.45, -0.105, 0.0]
+          ref_vel: [-0.15, 0.0, 0.0]
+          surface: RightFootCenter
+        - pose:
+            translation: [-0.6, 0.105, 0.0]
+          ref_vel: [-0.075, 0.0, 0.0]
+          surface: LeftFootCenter
+        - pose:
+            translation: [-0.75, -0.105, 0.0]
+          ref_vel: [0.0, 0.0, 0.0]
+          surface: RightFootCenter
+        - pose:
+            translation: [-0.75, 0.105, 0.0]
+          ref_vel: [0.0, 0.0, 0.0]
+          surface: LeftFootCenter
+    walk_forward_100cm:
+      double_support_duration: 0.1
+      single_support_duration: 0.7
+      swing_height: 0.04
+      contacts:
+        - pose:
+            translation: [0.0, -0.105, 0.0]
+          ref_vel: [0.0, 0.0, 0.0]
+          surface: RightFootCenter
+        - pose:
+            translation: [0.0, 0.105, 0.0]
+          ref_vel: [0.0, 0.0, 0.0]
+          surface: LeftFootCenter
+        - pose:
+            translation: [0.2, -0.105, 0.0]
+          ref_vel: [0.1, 0.0, 0.0]
+          surface: RightFootCenter
+        - pose:
+            translation: [0.4, 0.105, 0.0]
+          ref_vel: [0.2, 0.0, 0.0]
+          surface: LeftFootCenter
+        - pose:
+            translation: [0.6, -0.105, 0.0]
+          ref_vel: [0.2, 0.0, 0.0]
+          surface: RightFootCenter
+        - pose:
+            translation: [0.8, 0.105, 0.0]
+          ref_vel: [0.1, 0.0, 0.0]
+          surface: LeftFootCenter
+        - pose:
+            translation: [1.0, -0.105, 0.0]
+          ref_vel: [0.0, 0.0, 0.0]
+          surface: RightFootCenter
+        - pose:
+            translation: [1.0, 0.105, 0.0]
+          ref_vel: [0.0, 0.0, 0.0]
+          surface: LeftFootCenter
+    warmup:
+      double_support_duration: 0.1
+      single_support_duration: 0.7
+      swing_height: 0.04
+      contacts:
+        - pose:
+            translation: [0.035, -0.105, 0.0]
+          surface: RightFootCenter
+        - pose:
+            translation: [0.035, 0.105, 0.0]
+          surface: LeftFootCenter
+        - pose:
+            translation: [0.035, -0.105, 0.0]
+          surface: RightFootCenter
+        - pose:
+            translation: [0.035, 0.105, 0.0]
+          surface: LeftFootCenter
+
 # Implement some additional text states
-states: {}
+states:
+  PreGrasp1:
+    base: MetaTasks
+    tasks:
+      com:
+        type: com
+        weight: 1000
+        com: [0, 0, 0.79]
+      transform:
+        type: transform
+        frame: RightHand
+        target:
+          translation: [0.62, -0.24, 1.18]
+          rotation: [-1.57, 1.57, -3.14]
+        completion:
+          eval: 0.01
+
+  FSM::Initial:
+    base: FSMSampleController_Initial
+    autoplay: true
+    resetPosture: false
+
+  FSM::DemoFSM:
+    base: Meta
+    transitions:
+      - [Pause, OK, PreGrasp1, Auto]
+    configs:
+      Pause:
+        duration: 2
+
+  # Full FSM for the demo
+  FSM::Demo:
+    base: Parallel
+    states:
+      - RunStabilizer
+      - FSM::DemoFSM
+
 # Transitions map
 transitions:
-- [FSMSampleController_Initial, OK, FSMSampleController_Initial, Strict]
-# Initial state
-init: FSMSampleController_Initial
+- [FSM::Initial, Standing, FSM::Demo]
+
+ObserverPipelines:
+- name: "LIPMWalkingObserverPipeline"
+  gui: true
+  observers:
+    - type: Encoder
+    - type: Attitude
+      required: false
+    - type: KinematicInertial
+      config:
+        anchorFrame:
+          maxAnchorFrameDiscontinuity: 0.02
+    - type: BodySensor
+      update: false
