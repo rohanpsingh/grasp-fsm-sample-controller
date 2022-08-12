@@ -35,17 +35,6 @@ collisions:
 - type: collision
   useMinimal: true
 
-# Initial set of contacts
-contacts:
-- r1: hrp5_p
-  r2: ground
-  r1Surface: LeftFoot
-  r2Surface: AllGround
-- r1: hrp5_p
-  r2: ground
-  r1Surface: RightFoot
-  r2Surface: AllGround
-
 initial_plan: custom_forward
 mpc:
   weights:
@@ -263,10 +252,18 @@ states:
     autoplay: true
     resetPosture: false
 
+  FSM::WalkInternal:
+    base: Meta
+    transitions:
+    - [Standing, DoubleSupport, DoubleSupport]
+    - [DoubleSupport, SingleSupport, SingleSupport]
+    - [DoubleSupport, Standing, Standing]
+    - [SingleSupport, DoubleSupport, DoubleSupport]
+
   FSM::DemoFSM:
     base: Meta
     transitions:
-      - [Pause, OK, PreGrasp1, Auto]
+      - [Pause, OK, FSM::WalkInternal, Strict]
     configs:
       Pause:
         duration: 2
