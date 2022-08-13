@@ -248,7 +248,7 @@ states:
           eval: 0.01
 
   FSM::Initial:
-    base: FSMSampleController_Initial
+    base: Initial
     autoplay: true
     resetPosture: false
 
