@@ -141,15 +141,27 @@ states:
         autoplay: true
         autoplay_plans: [custom_forward]
 
-  FSM::DemoFSM:
+  ObjectPickUp:
     base: Meta
     transitions:
-      - [Pause, OK, FSM::WalkInternal, Auto]
-      - [FSM::WalkInternal, OK, GraspStance, Auto]
       - [GraspStance, OK, OpenGripper, Auto]
       - [OpenGripper, OK, ReachObject, Auto]
       - [ReachObject, OK, CloseGripper, Auto]
       - [CloseGripper, OK, LiftObject, Auto]
+
+  ObjectPutDown:
+    base: Meta
+    transitions:
+      - [ReachObject, OK, OpenGripper, Auto]
+      - [OpenGripper, OK, GraspStance, Auto]
+      - [GraspStance, OK, CloseGripper, Auto]
+
+  FSM::DemoFSM:
+    base: Meta
+    transitions:
+      - [Pause, OK, FSM::WalkInternal, Auto]
+      - [FSM::WalkInternal, OK, ObjectPickUp, Auto]
+      - [ObjectPickUp, OK, ObjectPutDown, Auto]
     configs:
       Pause:
         duration: 2
