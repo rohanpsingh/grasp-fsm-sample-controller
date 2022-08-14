@@ -70,6 +70,40 @@ plans:
 
 # Implement some additional text states
 states:
+  MoveHand:
+    base: MetaTasks
+    tasks:
+      transform:
+        type: bspline_trajectory
+        frame: RightHand
+        duration: 5.0
+        target:
+          translation: [2.8, -0.24, 1.0]
+          rotation: [-1.57, 1.57, -3.14]
+        controlPoints:
+        [
+          [2.8, -0.24, 0.9],
+        ]
+        completion:
+          timeElapsed: true
+
+  MoveHandBack:
+    base: MetaTasks
+    tasks:
+      transform:
+        type: bspline_trajectory
+        frame: RightHand
+        duration: 5.0
+        target:
+          translation: [2.8, -0.24, 1.0]
+          rotation: [-1.57, 1.57, -3.14]
+        controlPoints:
+        [
+          [3.1, -0.24, 0.9],
+        ]
+        completion:
+          timeElapsed: true
+
   GraspStance:
     base: MetaTasks
     tasks:
@@ -141,9 +175,14 @@ states:
         autoplay: true
         autoplay_plans: [custom_forward]
 
+  FSM::HalfSitting:
+    base: HalfSitting
+    eval: 0.001
+
   ObjectPickUp:
     base: Meta
     transitions:
+      - [MoveHand, OK, GraspStance, Auto]
       - [GraspStance, OK, OpenGripper, Auto]
       - [OpenGripper, OK, ReachObject, Auto]
       - [ReachObject, OK, CloseGripper, Auto]
@@ -155,6 +194,7 @@ states:
       - [ReachObject, OK, OpenGripper, Auto]
       - [OpenGripper, OK, GraspStance, Auto]
       - [GraspStance, OK, CloseGripper, Auto]
+      - [CloseGripper, OK, MoveHandBack, Auto]
 
   FSM::DemoFSM:
     base: Meta
@@ -162,6 +202,7 @@ states:
       - [Pause, OK, FSM::WalkInternal, Auto]
       - [FSM::WalkInternal, OK, ObjectPickUp, Auto]
       - [ObjectPickUp, OK, ObjectPutDown, Auto]
+      - [ObjectPutDown, OK, FSM::HalfSitting, Auto]
     configs:
       Pause:
         duration: 2
