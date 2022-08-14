@@ -47,6 +47,12 @@ $ make install
 ```
 
 ### Launch
+Edit `mc-rtc` config file:
+```yaml
+MainRobot: HRP5P
+Enabled: FSMSampleController
+Timestep: 0.002
+```
 
 ```sh
 $ mc_mujoco
