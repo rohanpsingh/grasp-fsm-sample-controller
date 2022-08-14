@@ -1,5 +1,9 @@
 # grasp-fsm-sample-controller
 
+![Screenshot from 2022-08-15 02-33-07](https://user-images.githubusercontent.com/16384313/184548325-4557783a-e26f-443c-88fe-304b90aa7ca4.png)
+---
+
+### Notes
 
 Assumes `longtable` and `box` objects are placed in the mujoco scene as follows: 
 
@@ -57,3 +61,7 @@ Timestep: 0.002
 ```sh
 $ mc_mujoco
 ```
+
+All states and transitions should occur automatically.
+
+
