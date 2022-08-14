@@ -80,7 +80,9 @@ states:
           translation: [3.12, -0.24, 0.90]
           rotation: [-1.57, 1.57, -3.14]
         completion:
-          eval: 0.10
+          OR:
+            - eval: 0.02
+            - timeout: 7
 
   ReachObject:
     base: MetaTasks
@@ -89,10 +91,12 @@ states:
         type: transform
         frame: RightHand
         target:
-          translation: [3.12, -0.08, 0.90]
+          translation: [3.12, -0.10, 0.90]
           rotation: [-1.57, 1.57, -3.14]
         completion:
-          eval: 0.03
+          OR:
+            - eval: 0.02
+            - timeout: 7
 
   LiftObject:
     base: MetaTasks
@@ -104,7 +108,9 @@ states:
           translation: [3.12, -0.08, 1.45]
           rotation: [-1.57, 1.57, -3.14]
         completion:
-          eval: 0.03
+          OR:
+            - eval: 0.02
+            - timeout: 7
 
   OpenGripper:
     base: Grippers
