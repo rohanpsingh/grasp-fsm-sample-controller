@@ -1,1 +1,0 @@
-add_fsm_data_directory(data)
