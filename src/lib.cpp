@@ -1,3 +1,3 @@
 #include "controller.h"
 
-CONTROLLER_CONSTRUCTOR("FSMSampleController", FSMSampleController)
+CONTROLLER_CONSTRUCTOR("GraspFSM", GraspFSM)

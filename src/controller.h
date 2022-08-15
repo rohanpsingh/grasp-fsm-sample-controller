@@ -5,9 +5,9 @@
 
 #include "api.h"
 
-struct FSMSampleController_DLLAPI FSMSampleController : public lipm_walking::Controller
+struct GraspFSM_DLLAPI GraspFSM : public lipm_walking::Controller
 {
-    FSMSampleController(mc_rbdyn::RobotModulePtr rm, double dt, const mc_rtc::Configuration & config);
+    GraspFSM(mc_rbdyn::RobotModulePtr rm, double dt, const mc_rtc::Configuration & config);
     void reset(const mc_control::ControllerResetData & reset_data) override;
 private:
     mc_rtc::Configuration config_;

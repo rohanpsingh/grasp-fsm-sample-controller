@@ -43,7 +43,7 @@ index 8db8c9f..b8f6012 100644
 ### Build and Install
 
 ```sh
-$ git clone --recursive git@github.com:rohanpsingh/grasp-fsm-sample-controlle.git
+$ git clone --recursive git@github.com:rohanpsingh/grasp-fsm-sample-controller.git
 $ cd mc_mujoco
 $ mkdir build && cd build
 $ cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo
@@ -54,7 +54,7 @@ $ make install
 Edit `mc-rtc` config file:
 ```yaml
 MainRobot: HRP5P
-Enabled: FSMSampleController
+Enabled: GraspFSM
 Timestep: 0.002
 ```
 
