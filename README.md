@@ -56,7 +56,9 @@ Edit `mc-rtc` config file:
 MainRobot: HRP5P
 Enabled: GraspFSM
 Timestep: 0.002
-```
+``` 
+
+Fire up `mc-mujoco` (or any other interface):
 
 ```sh
 $ mc_mujoco
