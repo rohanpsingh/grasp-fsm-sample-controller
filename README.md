@@ -11,12 +11,12 @@ Assumes `longtable` and `box` objects are placed in the mujoco scene as follows:
 ```
 objects:
   box:
-    name: "box"
+    module: "box"
     init_pos:
       translation: [3.1, 0, 0.9]
       rotation: [0, 0, 0]
   longtable:
-    name: "longtable"
+    module: "longtable"
     init_pos:
       translation: [3.5, 0, 0.8]
       rotation: [3.14, 0, 0]
