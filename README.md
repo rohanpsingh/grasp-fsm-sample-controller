@@ -1,7 +1,13 @@
 # grasp-fsm-sample-controller
 
-![Screenshot from 2022-08-15 02-33-07](https://user-images.githubusercontent.com/16384313/184548325-4557783a-e26f-443c-88fe-304b90aa7ca4.png)
----
+<div align="center">
+      <a href="https://youtu.be/7GmmAW5C20o">
+     <img src="https://img.youtube.com/vi/7GmmAW5C20o/maxresdefault.jpg" 
+      alt="Demo video" 
+      style="width:80%;">
+      </a>
+</div>
+
 
 ### Notes
 
