@@ -59,7 +59,7 @@ $ make install
 ### Launch
 Edit `mc-rtc` config file:
 ```yaml
-MainRobot: HRP5P
+MainRobot: JVRC1
 Enabled: GraspFSM
 Timestep: 0.002
 ``` 

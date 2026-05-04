@@ -153,7 +153,7 @@ CentroidalManager:
   zmpVelGain: 0.02
   comZGainP: 2000.0
   comZGainD: 500.0
-  refComZ: 0.9 # [m] (HRP5P default)
+  refComZ: 0.825 # [m]
   useTargetPoseForControlRobotAnchorFrame: true
   useActualComForWrenchDist: false
   actualComOffset: [0.0, 0.0, 0.0]
@@ -169,7 +169,7 @@ CentroidalManager:
   reinitForRefComZ: true
 
 # ============================================================
-# FSM States (defaults for HRP5P)
+# FSM States
 # Robot-specific overrides are merged via robots/<name>/states
 # ============================================================
 
@@ -393,34 +393,3 @@ robots:
   ground:
     module: env/ground
 
-  # --- HRP5P ---
-  hrp5_p:
-    PostureTask:
-      jointWeights:
-        WP: 50
-        WR: 50
-
-    CoMTask:
-      activeJoints: [
-      "Root",
-      "LCY", "LCR", "LCP", "LKP", "LAP", "LAR",
-      "RCY", "RCR", "RCP", "RKP", "RAP", "RAR"]
-
-    BaseOrientationTask:
-      frame: Chest_Link2
-
-    FootManager:
-      footstepDuration: 0.9 # [sec]
-      doubleSupportRatio: 0.15 # []
-      impedanceGains:
-        SingleSupport:
-          spring:
-            linear: [2250, 2250, 450]
-
-    CentroidalManager:
-      dcmGainP: 2.0
-      comZGainP: 20000.0
-      refComZ: 0.95 # [m]
-      method: PreviewControlZmp
-      horizonDuration: 2.0 # [sec]
-      horizonDt: 0.002 # [sec]
