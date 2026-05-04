@@ -181,6 +181,16 @@ CentroidalManager:
 # Robot-specific overrides are merged via robots/<name>/states
 # ============================================================
 
+# Shared defaults merged into each arm spline state via YAML merge keys (`<<:`).
+# Underscore-prefixed top-level keys are ignored by mc_rtc.
+_armSplineDefaults: &armSplineDefaults
+  type: bspline_trajectory
+  frame: R_WRIST_Y_S
+  weight: 1000.0
+  stiffness: 50.0
+  completion:
+    timeElapsed: true
+
 states:
   BWC::Initial_:
     base: BWC::Initial
@@ -197,61 +207,41 @@ states:
     base: MetaTasks
     tasks:
       transform:
-        type: bspline_trajectory
-        frame: R_WRIST_Y_S
+        <<: *armSplineDefaults
         duration: 5.0
-        weight: 1000.0
-        stiffness: 50.0
         target:
           translation: [3.0, -0.3, 0.8]
           rotation: [1.57, 0, 0]
-        completion:
-          timeElapsed: true
 
   GraspStance:
     base: MetaTasks
     tasks:
       transform:
-        type: bspline_trajectory
-        frame: R_WRIST_Y_S
+        <<: *armSplineDefaults
         duration: 3.0
-        weight: 1000.0
-        stiffness: 50.0
         target:
           translation: [3.2, -0.45, 1.1]
           rotation: [1.57, 1.57, 0]
-        completion:
-          timeElapsed: true
 
   ReachObject:
     base: MetaTasks
     tasks:
       transform:
-        type: bspline_trajectory
-        frame: R_WRIST_Y_S
+        <<: *armSplineDefaults
         duration: 3.0
-        weight: 1000.0
-        stiffness: 50.0
         target:
           translation: [3.2, -0.16, 1.0]
           rotation: [1.57, 1.57, 0]
-        completion:
-          timeElapsed: true
 
   LiftObject:
     base: MetaTasks
     tasks:
       transform:
-        type: bspline_trajectory
-        frame: R_WRIST_Y_S
+        <<: *armSplineDefaults
         duration: 4.0
-        weight: 1000.0
-        stiffness: 50.0
         target:
           translation: [3.2, -0.16, 1.5]
           rotation: [1.57, 1.57, 0]
-        completion:
-          timeElapsed: true
 
   OpenGripper:
     base: Grippers
