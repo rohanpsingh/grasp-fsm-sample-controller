@@ -41,7 +41,7 @@ contacts: []
 controllerName: GraspFSM
 
 PostureTask:
-  stiffness: 10
+  stiffness: 1
   jointWeights:
     WAIST_R: 50
     WAIST_P: 50
@@ -203,31 +203,8 @@ states:
         weight: 1000.0
         stiffness: 50.0
         target:
-          translation: [3.0, -0.24, 1.0]
-          rotation: [0, -1, 0]
-        controlPoints:
-        [
-          [2.8, -0.24, 0.9],
-        ]
-        completion:
-          timeElapsed: true
-
-  MoveHandBack:
-    base: MetaTasks
-    tasks:
-      transform:
-        type: bspline_trajectory
-        frame: R_WRIST_Y_S
-        duration: 5.0
-        weight: 1000.0
-        stiffness: 50.0
-        target:
-          translation: [3.0, -0.24, 1.2]
-          rotation: [-1.57, 1.57, -3.14]
-        controlPoints:
-        [
-          [3.1, -0.24, 0.9],
-        ]
+          translation: [3.0, -0.3, 0.8]
+          rotation: [1.57, 0, 0]
         completion:
           timeElapsed: true
 
@@ -241,8 +218,8 @@ states:
         weight: 1000.0
         stiffness: 50.0
         target:
-          translation: [3.1, -0.24, 1.1]
-          rotation: [1, 0, 0]
+          translation: [3.2, -0.45, 1.1]
+          rotation: [1.57, 1.57, 0]
         completion:
           timeElapsed: true
 
@@ -256,8 +233,8 @@ states:
         weight: 1000.0
         stiffness: 50.0
         target:
-          translation: [3.0, -0.10, 1.1]
-          rotation: [-1.57, 1.57, -3.14]
+          translation: [3.2, -0.16, 1.0]
+          rotation: [1.57, 1.57, 0]
         completion:
           timeElapsed: true
 
@@ -271,8 +248,8 @@ states:
         weight: 1000.0
         stiffness: 50.0
         target:
-          translation: [2.9, -0.08, 1.65]
-          rotation: [-1.57, 1.57, -3.14]
+          translation: [3.2, -0.16, 1.5]
+          rotation: [1.57, 1.57, 0]
         completion:
           timeElapsed: true
 
@@ -288,64 +265,50 @@ states:
       r_gripper:
         opening: 0.
 
+  HoldRightHand:
+    base: MetaTasks
+    tasks:
+      holdHand:
+        type: transform
+        frame: R_WRIST_Y_S
+        weight: 10.0
+        stiffness: 200.0
+    # No target → captures the current R_WRIST_Y_S pose at state start.
+    # eval threshold is reached immediately so Parallel waits only on the gripper.
+    completion:
+      eval: 1.0e-3
+
+  OpenAndHold:
+    base: Parallel
+    states: [HoldRightHand, OpenGripper]
+
+  CloseAndHold:
+    base: Parallel
+    states: [HoldRightHand, CloseGripper]
+
+  HoldAndPause:
+    base: Parallel
+    states: [HoldRightHand, Pause]
+    configs:
+      Pause:
+        duration: 3
+
   ObjectPickUp:
     base: Meta
     transitions:
       - [MoveHand, OK, GraspStance, Auto]
-      - [GraspStance, OK, OpenGripper, Auto]
-      - [OpenGripper, OK, ReachObject, Auto]
-      - [ReachObject, OK, CloseGripper, Auto]
-      - [CloseGripper, OK, LiftObject, Auto]
-    configs:
-      OpenGripper:
-        tasks:
-          holdHand:
-            type: transform
-            frame: R_WRIST_Y_S
-            weight: 1000.0
-            stiffness: 50.0
-            target:
-              translation: [3.1, -0.24, 1.1]
-              rotation: [1, 0, 0]
-      CloseGripper:
-        tasks:
-          holdHand:
-            type: transform
-            frame: R_WRIST_Y_S
-            weight: 1000.0
-            stiffness: 50.0
-            target:
-              translation: [3.0, -0.10, 1.1]
-              rotation: [-1.57, 1.57, -3.14]
+      - [GraspStance, OK, OpenAndHold, Auto]
+      - [OpenAndHold, OK, ReachObject, Auto]
+      - [ReachObject, OK, CloseAndHold, Auto]
+      - [CloseAndHold, OK, LiftObject, Auto]
 
   ObjectPutDown:
     base: Meta
     transitions:
-      - [ReachObject, OK, OpenGripper, Auto]
-      - [OpenGripper, OK, GraspStance, Auto]
-      - [GraspStance, OK, CloseGripper, Auto]
-      - [CloseGripper, OK, MoveHandBack, Auto]
-    configs:
-      OpenGripper:
-        tasks:
-          holdHand:
-            type: transform
-            frame: R_WRIST_Y_S
-            weight: 1000.0
-            stiffness: 50.0
-            target:
-              translation: [3.0, -0.10, 1.1]
-              rotation: [-1.57, 1.57, -3.14]
-      CloseGripper:
-        tasks:
-          holdHand:
-            type: transform
-            frame: R_WRIST_Y_S
-            weight: 1000.0
-            stiffness: 50.0
-            target:
-              translation: [3.1, -0.24, 1.1]
-              rotation: [1, 0, 0]
+      - [ReachObject, OK, OpenAndHold, Auto]
+      - [OpenAndHold, OK, GraspStance, Auto]
+      - [GraspStance, OK, CloseAndHold, Auto]
+      - [CloseAndHold, OK, MoveHand, Auto]
 
   FSM::HalfSitting:
     base: HalfSitting
@@ -357,7 +320,8 @@ states:
       - [Pause, OK, WalkForward, Auto]
       - [WalkForward, OK, WaitForWalk, Auto]
       - [WaitForWalk, OK, ObjectPickUp, Auto]
-      - [ObjectPickUp, OK, ObjectPutDown, Auto]
+      - [ObjectPickUp, OK, HoldAndPause, Auto]
+      - [HoldAndPause, OK, ObjectPutDown, Auto]
       - [ObjectPutDown, OK, FSM::HalfSitting, Auto]
     configs:
       Pause:
