@@ -42,16 +42,24 @@ controllerName: GraspFSM
 
 PostureTask:
   stiffness: 10
+  jointWeights:
+    WAIST_R: 50
+    WAIST_P: 50
 
 CoMTask:
   type: com
   stiffness: [1000.0, 1000.0, 1000.0]
   weight: 1000.0
+  activeJoints: [
+  "Root",
+  "R_HIP_Y", "R_HIP_R", "R_HIP_P", "R_KNEE", "R_ANKLE_P", "R_ANKLE_R",
+  "L_HIP_Y", "L_HIP_R", "L_HIP_P", "L_KNEE", "L_ANKLE_P", "L_ANKLE_R"]
 
 BaseOrientationTask:
   type: orientation
   stiffness: 300.0
   weight: 500.0
+  frame: WAIST_R_S
 
 FootTaskList:
   - type: firstOrderImpedance
@@ -183,20 +191,20 @@ states:
     base: BWC::ConfigWalk
     configs:
       footMidpose:
-        target: [2.5, 0, 0] # (x [m], y [m], theta [deg])
+        target: [2.9, 0, 0] # (x [m], y [m], theta [deg])
 
   MoveHand:
     base: MetaTasks
     tasks:
       transform:
         type: bspline_trajectory
-        frame: RightHand
+        frame: R_WRIST_Y_S
         duration: 5.0
         weight: 1000.0
         stiffness: 50.0
         target:
-          translation: [2.8, -0.24, 1.0]
-          rotation: [-1.57, 1.57, -3.14]
+          translation: [3.0, -0.24, 1.0]
+          rotation: [0, -1, 0]
         controlPoints:
         [
           [2.8, -0.24, 0.9],
@@ -209,12 +217,12 @@ states:
     tasks:
       transform:
         type: bspline_trajectory
-        frame: RightHand
+        frame: R_WRIST_Y_S
         duration: 5.0
         weight: 1000.0
         stiffness: 50.0
         target:
-          translation: [2.8, -0.24, 1.0]
+          translation: [3.0, -0.24, 1.2]
           rotation: [-1.57, 1.57, -3.14]
         controlPoints:
         [
@@ -228,13 +236,13 @@ states:
     tasks:
       transform:
         type: bspline_trajectory
-        frame: RightHand
+        frame: R_WRIST_Y_S
         duration: 3.0
         weight: 1000.0
         stiffness: 50.0
         target:
-          translation: [3.12, -0.24, 0.90]
-          rotation: [-1.57, 1.57, -3.14]
+          translation: [3.1, -0.24, 1.1]
+          rotation: [1, 0, 0]
         completion:
           timeElapsed: true
 
@@ -243,12 +251,12 @@ states:
     tasks:
       transform:
         type: bspline_trajectory
-        frame: RightHand
+        frame: R_WRIST_Y_S
         duration: 3.0
         weight: 1000.0
         stiffness: 50.0
         target:
-          translation: [3.12, -0.10, 0.90]
+          translation: [3.0, -0.10, 1.1]
           rotation: [-1.57, 1.57, -3.14]
         completion:
           timeElapsed: true
@@ -258,12 +266,12 @@ states:
     tasks:
       transform:
         type: bspline_trajectory
-        frame: RightHand
+        frame: R_WRIST_Y_S
         duration: 4.0
         weight: 1000.0
         stiffness: 50.0
         target:
-          translation: [3.12, -0.08, 1.45]
+          translation: [2.9, -0.08, 1.65]
           rotation: [-1.57, 1.57, -3.14]
         completion:
           timeElapsed: true
@@ -293,21 +301,21 @@ states:
         tasks:
           holdHand:
             type: transform
-            frame: RightHand
+            frame: R_WRIST_Y_S
             weight: 1000.0
             stiffness: 50.0
             target:
-              translation: [3.12, -0.24, 0.90]
-              rotation: [-1.57, 1.57, -3.14]
+              translation: [3.1, -0.24, 1.1]
+              rotation: [1, 0, 0]
       CloseGripper:
         tasks:
           holdHand:
             type: transform
-            frame: RightHand
+            frame: R_WRIST_Y_S
             weight: 1000.0
             stiffness: 50.0
             target:
-              translation: [3.12, -0.10, 0.90]
+              translation: [3.0, -0.10, 1.1]
               rotation: [-1.57, 1.57, -3.14]
 
   ObjectPutDown:
@@ -322,22 +330,22 @@ states:
         tasks:
           holdHand:
             type: transform
-            frame: RightHand
+            frame: R_WRIST_Y_S
             weight: 1000.0
             stiffness: 50.0
             target:
-              translation: [3.12, -0.10, 0.90]
+              translation: [3.0, -0.10, 1.1]
               rotation: [-1.57, 1.57, -3.14]
       CloseGripper:
         tasks:
           holdHand:
             type: transform
-            frame: RightHand
+            frame: R_WRIST_Y_S
             weight: 1000.0
             stiffness: 50.0
             target:
-              translation: [3.12, -0.24, 0.90]
-              rotation: [-1.57, 1.57, -3.14]
+              translation: [3.1, -0.24, 1.1]
+              rotation: [1, 0, 0]
 
   FSM::HalfSitting:
     base: HalfSitting
@@ -393,3 +401,7 @@ robots:
   ground:
     module: env/ground
 
+  # BWC requires a non-empty robots.<name> block; tuning is inlined at top-level above.
+  jvrc1:
+    CentroidalManager:
+      refComZ: 0.825 # [m]
