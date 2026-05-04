@@ -4,7 +4,7 @@
       <a href="https://youtu.be/7GmmAW5C20o">
      <img src="assets/demo.gif"
       alt="Demo video"
-      style="width:80%;">
+      style="width:100%;">
       </a>
 </div>
 
@@ -13,7 +13,7 @@
 
 This controller was previously built on top of [LIPM-Walking](https://github.com/jrl-umi3218/lipm_walking_controller) and has since been ported to use [BaselineWalkingController](https://github.com/isri-aist/BaselineWalkingController) for footstep planning and walking.
 
-Assumes `longtable` object and `tallbox` (a box of `size="0.02 0.06 0.15"`) object are placed in the mujoco scene as follows:
+Assumes `longtable` object and `tallbox` (a box of `size="0.02 0.06 0.15"` and `noslip_iterations="3"`) object are placed in the mujoco scene as follows:
 
 
 ```
