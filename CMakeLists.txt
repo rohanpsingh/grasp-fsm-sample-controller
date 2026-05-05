@@ -13,11 +13,22 @@ project(${PROJECT_NAME} CXX)
 if(NOT TARGET mc_rtc::mc_control)
   find_package(mc_rtc REQUIRED)
 endif()
-find_package(baseline_walking_controller REQUIRED)
+# Pin BWC to a known-good minimum. Bump when validated against a newer release.
+find_package(baseline_walking_controller 0.1.0 REQUIRED)
 
 add_subdirectory(src)
 
 set(AROBASE "@")
-configure_file(etc/GraspFSM.in.yaml "${CMAKE_CURRENT_BINARY_DIR}/etc/GraspFSM.yaml")
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/etc/GraspFSM.yaml" DESTINATION "${MC_CONTROLLER_RUNTIME_INSTALL_PREFIX}/etc")
+
+configure_file(etc/GraspFSM.in.yaml "${CMAKE_CURRENT_BINARY_DIR}/etc/GraspFSM.yaml" @ONLY)
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/etc/GraspFSM.yaml"
+        DESTINATION "${MC_CONTROLLER_RUNTIME_INSTALL_PREFIX}/etc")
+
+configure_file(etc/mc_rtc.in.yaml "${CMAKE_CURRENT_BINARY_DIR}/etc/mc_rtc.yaml" @ONLY)
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/etc/mc_rtc.yaml"
+        DESTINATION "${MC_CONTROLLER_RUNTIME_INSTALL_PREFIX}/etc")
+
+configure_file(etc/mc_mujoco.in.yaml "${CMAKE_CURRENT_BINARY_DIR}/etc/mc_mujoco.yaml" @ONLY)
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/etc/mc_mujoco.yaml"
+        DESTINATION "${MC_CONTROLLER_RUNTIME_INSTALL_PREFIX}/etc")
 

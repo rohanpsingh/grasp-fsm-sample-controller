@@ -1,0 +1,3 @@
+MainRobot: JVRC1
+Enabled: GraspFSM
+Timestep: 0.002
