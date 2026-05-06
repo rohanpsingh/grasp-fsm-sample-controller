@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.5)
 
 set(CXX_DISABLE_WERROR 1)
 set(CMAKE_CXX_STANDARD 17)
@@ -14,7 +14,12 @@ if(NOT TARGET mc_rtc::mc_control)
   find_package(mc_rtc REQUIRED)
 endif()
 # Pin BWC to a known-good minimum. Bump when validated against a newer release.
-find_package(baseline_walking_controller 0.1.0 REQUIRED)
+# find_package(baseline_walking_controller 0.1.0 QUIET)
+find_package(baseline_walking_controller 0.1.0 QUIET)
+if(NOT baseline_walking_controller_FOUND)
+  message(WARNING "baseline_walking_controller not found -- skipping grasp-fsm example")
+  return()
+endif()
 
 add_subdirectory(src)
 
